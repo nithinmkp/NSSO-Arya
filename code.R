@@ -35,8 +35,11 @@ into_vec_list<-map(info_tbl,~.x %>% select(1) %>% pull)
 #Final data sheets
 data_list<-tibble(data=raw_data,sep=sep_vec_list,
                   into=into_vec_list) %>% 
-        pmap(separate,col="V1")
+        pmap(separate,col="V1") %>% 
+        map(as_tibble)
+data_list<-data_list %>% 
+        map(~.x %>% mutate(across(.cols = -1,.fns = as.numeric)))
 
 
 #Write into excel sheets
-openxlsx::write.xlsx(data_list,"test.xlsx")
+openxlsx::write.xlsx(data_list,"test2.xlsx")

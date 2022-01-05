@@ -9,3 +9,9 @@ package_fn<-function(pkg){
                 sapply(pkg,library,character.only=T)
         }
 }
+
+#type conversion function
+convert_fn<-function(df, col_ind,fn,...) {
+        df <- df %>% mutate(across(.cols = col_ind, .fns = fn,...))
+        return(df)
+}
