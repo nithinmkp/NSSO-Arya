@@ -9,7 +9,7 @@ text_files<-list.files(pattern = "*.TXT",path = paste0(here(),"/Data/Visit-1/"))
 raw_data_files<-paste0(here(),"/Data/Visit-1/",text_files)
 raw_data<-map(raw_data_files,read.delim,header=F,sep="\t") %>% 
         set_names(paste(nom_ord(1:17),"data",sep = "_"))
-raw_data<-raw_data[-1]
+raw_data<-raw_data[-1] #comment this line out if you want to use block 1 and block 2 info
 
 
 #layout specifications sheet
@@ -23,7 +23,7 @@ n2<-n2-1 #adjust the blank column
 n3<-n1+1 # skip header row
 slice_num<-map2(n3,n2,seq) %>% 
         set_names(paste0("slice_cond",1:17))
-slice_num<-slice_num[-1]
+slice_num<-slice_num[-1] #simillarly here, comment out for using block 1 and 2 info
 
 info_tbl<-map(slice_num,~lay_out_excel %>% 
                        slice(.x) %>% 
