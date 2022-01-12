@@ -1,5 +1,4 @@
 #packages
-library(devtools)
 source("Functions.R")
 packages<-c("tidyverse","readxl","haven","rio","here","nombre","fs","openxlsx","writexl")
 package_fn(packages)
