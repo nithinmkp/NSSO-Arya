@@ -1,8 +1,11 @@
 # Functions ---------------------------------------------------------------
 
-#Package Function
+
+# Functions ---------------------------------------------------------------
+
+## ---- Package Function
 package_fn<-function(pkg){
-        new.pkg<-pkg[!(pkg %in% installed.packages()[,"Package"])]
+        new.pkg<-setdiff(pkg,installed.packages()[,"Package"])
         if(length(new.pkg)){
                 install.packages(new.pkg,dependencies = T)
                 sapply(pkg,library,character.only=T)
@@ -11,8 +14,9 @@ package_fn<-function(pkg){
         }
 }
 
-#type conversion function
+
+## ---- type conversion function
 convert_fn<-function(df, col_ind,fn,...) {
         df <- df %>% mutate(across(.cols = col_ind, .fns = fn,...))
-        return(df)
 }
+

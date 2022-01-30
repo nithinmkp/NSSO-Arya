@@ -1,6 +1,7 @@
 #packages
 source("Functions.R")
-packages<-c("tidyverse","readxl","haven","rio","here","nombre","fs","openxlsx","writexl")
+packages<-c("tidyverse","readxl","haven","rio","here","nombre","fs",
+            "openxlsx","writexl","powerjoin","data.table")
 package_fn(packages)
 
 #read data
@@ -73,9 +74,6 @@ data_list_common2<-map(data_list_common,~.x %>% select(-c(1,3:13))) %>%
         map(~.x %>% mutate(across(!contains(c("common-id","Common-ID")),
                                                                  as.numeric)))
 
-
-merge_data_common<-data_list_common2[-2]%>% reduce(inner_join,by="common-id") #not merging level 3
-
 #Folder for Excel Sheets
 output_folder<-"Excel-Sheets"
 dir_create(output_folder)
@@ -107,6 +105,10 @@ openxlsx::write.xlsx(merge_data,paste0(here(),"/",output_folder,"/merged.xlsx"))
 merge_raw_data<-data_list_common2[-2]
 rm(raw_data,data_list,data_list_common,new_data_list,data_list_common2) #remove earlier created lists to save memory
 gc() #clean unused memory
-merged_data_final<-merge_raw_data %>% reduce(inner_join,by="common-id")
+
+#Convert final list of data to data.table
+list_DT<- map(merge_raw_data,setDT,key="common-id")
+
+merged_data_final<-merge_raw_data %>% reduce(power_inner_join,by="common-id")
 
 
